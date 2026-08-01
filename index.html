@@ -3,20 +3,19 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Pro Master Quiz - Educational Edition</title>
+<title>Pro Master Quiz - Vibrant Edition</title>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg-main: #090d16;
-    --card-bg: rgba(22, 30, 46, 0.75);
-    --card-border: rgba(255, 255, 255, 0.1);
-    --accent-blue: #3b82f6;
-    --accent-blue-hover: #2563eb;
-    --accent-green: #10b981;
-    --accent-green-hover: #059669;
-    --accent-red: #ef4444;
-    --text-primary: #f8fafc;
-    --text-secondary: #94a3b8;
+    --card-bg: rgba(255, 255, 255, 0.85);
+    --card-border: rgba(255, 255, 255, 0.6);
+    --accent-indigo: #4f46e5;
+    --accent-indigo-hover: #4338ca;
+    --accent-emerald: #10b981;
+    --accent-emerald-hover: #059669;
+    --accent-rose: #f43f5e;
+    --text-primary: #1e293b;
+    --text-secondary: #64748b;
   }
 
   * {
@@ -28,7 +27,10 @@
     margin: 0;
     padding: 20px;
     min-height: 100vh;
-    background-color: var(--bg-main);
+    /* Bright, vibrant mesh gradient background */
+    background: linear-gradient(135deg, #a855f7 0%, #ec4899 35%, #3b82f6 70%, #06b6d4 100%);
+    background-size: 200% 200%;
+    animation: gradientMove 12s ease infinite;
     color: var(--text-primary);
     display: flex;
     justify-content: center;
@@ -37,32 +39,38 @@
     overflow-x: hidden;
   }
 
-  /* Educational Modern Background Elements */
+  @keyframes gradientMove {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
+  /* Floating Decorative Colorful Circles */
   .bg-shape {
     position: fixed;
     border-radius: 50%;
-    filter: blur(100px);
+    filter: blur(80px);
     z-index: 0;
     pointer-events: none;
-    opacity: 0.4;
-    animation: float 12s infinite alternate ease-in-out;
+    opacity: 0.6;
+    animation: float 10s infinite alternate ease-in-out;
   }
 
   .bg-shape-1 {
-    width: 400px;
-    height: 400px;
-    background: #3b82f6;
-    top: -100px;
-    left: -100px;
+    width: 350px;
+    height: 350px;
+    background: #facc15;
+    top: -50px;
+    left: -50px;
   }
 
   .bg-shape-2 {
-    width: 500px;
-    height: 500px;
-    background: #8b5cf6;
-    bottom: -150px;
-    right: -100px;
-    animation-delay: -6s;
+    width: 400px;
+    height: 400px;
+    background: #f43f5e;
+    bottom: -100px;
+    right: -50px;
+    animation-delay: -5s;
   }
 
   .bg-pattern {
@@ -71,40 +79,40 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background-image: radial-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px);
-    background-size: 32px 32px;
+    background-image: radial-gradient(rgba(255, 255, 255, 0.25) 1.5px, transparent 1.5px);
+    background-size: 28px 28px;
     z-index: 0;
     pointer-events: none;
   }
 
   @keyframes float {
     0% { transform: translate(0, 0) scale(1); }
-    100% { transform: translate(30px, 40px) scale(1.08); }
+    100% { transform: translate(20px, 30px) scale(1.1); }
   }
 
-  /* Quiz Container with Glassmorphism */
+  /* Main Card Glassmorphism */
   .container {
     position: relative;
     z-index: 10;
     width: 100%;
     max-width: 720px;
     background: var(--card-bg);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
     border: 1px solid var(--card-border);
-    border-radius: 24px;
+    border-radius: 28px;
     padding: 40px;
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
     transition: all 0.3s ease;
   }
 
-  /* Typography Header */
+  /* Typography */
   h1 {
     font-size: 2.2rem;
     font-weight: 800;
     margin-top: 0;
     margin-bottom: 8px;
-    background: linear-gradient(135deg, #ffffff 0%, #cbd5e1 100%);
+    background: linear-gradient(135deg, #312e81 0%, #4338ca 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
   }
@@ -113,11 +121,12 @@
     color: var(--text-secondary);
     margin-bottom: 28px;
     font-size: 0.95rem;
+    font-weight: 500;
   }
 
   h3 {
     font-size: 1.25rem;
-    font-weight: 600;
+    font-weight: 700;
     color: var(--text-primary);
     line-height: 1.5;
   }
@@ -131,21 +140,23 @@
     width: 100%;
     margin: 10px 0;
     padding: 16px 20px;
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 12px;
+    border: 1px solid rgba(79, 70, 229, 0.15);
+    border-radius: 16px;
     cursor: pointer;
-    background: rgba(255, 255, 255, 0.04);
+    background: #ffffff;
     color: var(--text-primary);
     font-size: 0.95rem;
-    font-weight: 600;
+    font-weight: 700;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
     transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   button:hover {
-    background: var(--accent-blue);
+    background: var(--accent-indigo);
+    color: #ffffff;
     border-color: transparent;
     transform: translateY(-2px);
-    box-shadow: 0 10px 20px -5px rgba(59, 130, 246, 0.4);
+    box-shadow: 0 10px 20px -5px rgba(79, 70, 229, 0.4);
   }
 
   button:active {
@@ -167,15 +178,15 @@
     justify-content: space-between;
     align-items: center;
     font-size: 0.85rem;
-    font-weight: 600;
+    font-weight: 700;
     color: var(--text-secondary);
     text-transform: uppercase;
     letter-spacing: 0.5px;
   }
 
   #progress-bar {
-    height: 8px;
-    background: rgba(255, 255, 255, 0.08);
+    height: 10px;
+    background: rgba(0, 0, 0, 0.06);
     border-radius: 999px;
     margin: 16px 0 28px 0;
     overflow: hidden;
@@ -183,7 +194,7 @@
 
   #progress-fill {
     height: 100%;
-    background: linear-gradient(90deg, #3b82f6, #10b981);
+    background: linear-gradient(90deg, #ec4899, #8b5cf6, #3b82f6);
     width: 0%;
     transition: width 0.4s ease-in-out;
   }
@@ -201,20 +212,21 @@
     width: 6px;
   }
   .results-container::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(0, 0, 0, 0.15);
     border-radius: 4px;
   }
 
   .result-item {
     padding: 16px;
     margin-bottom: 12px;
-    background: rgba(0, 0, 0, 0.2);
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    border-radius: 12px;
+    background: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    border-radius: 16px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
   }
 
-  .correct { color: #34d399; font-weight: 600; }
-  .wrong { color: #f87171; font-weight: 600; }
+  .correct { color: #059669; font-weight: 700; }
+  .wrong { color: #dc2626; font-weight: 700; }
   .correct-label { color: var(--text-secondary); display: block; font-size: 0.85rem; margin-top: 6px; }
 
   /* Modal Popup */
@@ -222,8 +234,8 @@
     position: fixed;
     top: 0; left: 0;
     width: 100%; height: 100%;
-    background: rgba(9, 13, 22, 0.8);
-    backdrop-filter: blur(8px);
+    background: rgba(255, 255, 255, 0.4);
+    backdrop-filter: blur(12px);
     display: none;
     justify-content: center;
     align-items: center;
@@ -231,30 +243,31 @@
   }
 
   .popup-box {
-    background: #161e2e;
+    background: #ffffff;
     padding: 36px;
-    border-radius: 20px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
+    border-radius: 24px;
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    box-shadow: 0 20px 30px rgba(0, 0, 0, 0.12);
     text-align: center;
     max-width: 400px;
     width: 90%;
   }
 
   .btn-primary {
-    background: var(--accent-green);
+    background: var(--accent-emerald);
+    color: #ffffff;
     border-color: transparent;
   }
 
   .btn-primary:hover {
-    background: var(--accent-green-hover);
+    background: var(--accent-emerald-hover);
     box-shadow: 0 10px 20px -5px rgba(16, 185, 129, 0.4);
   }
 </style>
 </head>
 <body>
 
-<!-- Animated Background Elements -->
+<!-- Animated Vibrant Background Orbs -->
 <div class="bg-shape bg-shape-1"></div>
 <div class="bg-shape bg-shape-2"></div>
 <div class="bg-pattern"></div>
@@ -277,7 +290,7 @@
   <!-- Quiz Active Screen -->
   <div id="quizScreen" class="hidden">
     <div class="meta-bar">
-      <span id="courseDisplay" style="color: var(--accent-blue);"></span>
+      <span id="courseDisplay" style="color: var(--accent-indigo);"></span>
       <span id="levelDisplay"></span>
     </div>
     <div id="progress-bar"><div id="progress-fill"></div></div>
@@ -289,7 +302,7 @@
   <div id="finishScreen" class="hidden" style="text-align: center;">
     <h2>📊 Assessment Complete</h2>
     <p class="subtitle">Here is your total score and breakdown:</p>
-    <h1 id="finalScoreDisplay" style="font-size: 3rem; color: var(--accent-green);"></h1>
+    <h1 id="finalScoreDisplay" style="font-size: 3.5rem; color: var(--accent-emerald);"></h1>
     <div class="results-container" id="resultsLog"></div>
     <button onclick="resetToMenu()" style="margin-top: 24px;">Try Another Course</button>
   </div>
