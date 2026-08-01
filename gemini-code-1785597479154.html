@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pro Master Quiz - Educational Edition</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-main: #090d16;
+    --card-bg: rgba(22, 30, 46, 0.75);
+    --card-border: rgba(255, 255, 255, 0.1);
+    --accent-blue: #3b82f6;
+    --accent-blue-hover: #2563eb;
+    --accent-green: #10b981;
+    --accent-green-hover: #059669;
+    --accent-red: #ef4444;
+    --text-primary: #f8fafc;
+    --text-secondary: #94a3b8;
+  }
+
+  * {
+    box-sizing: border-box;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+  }
+
+  body {
+    margin: 0;
+    padding: 20px;
+    min-height: 100vh;
+    background-color: var(--bg-main);
+    color: var(--text-primary);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    overflow-x: hidden;
+  }
+
+  /* Educational Modern Background Elements */
+  .bg-shape {
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(100px);
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0.4;
+    animation: float 12s infinite alternate ease-in-out;
+  }
+
+  .bg-shape-1 {
+    width: 400px;
+    height: 400px;
+    background: #3b82f6;
+    top: -100px;
+    left: -100px;
+  }
+
+  .bg-shape-2 {
+    width: 500px;
+    height: 500px;
+    background: #8b5cf6;
+    bottom: -150px;
+    right: -100px;
+    animation-delay: -6s;
+  }
+
+  .bg-pattern {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: radial-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px);
+    background-size: 32px 32px;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  @keyframes float {
+    0% { transform: translate(0, 0) scale(1); }
+    100% { transform: translate(30px, 40px) scale(1.08); }
+  }
+
+  /* Quiz Container with Glassmorphism */
+  .container {
+    position: relative;
+    z-index: 10;
+    width: 100%;
+    max-width: 720px;
+    background: var(--card-bg);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid var(--card-border);
+    border-radius: 24px;
+    padding: 40px;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    transition: all 0.3s ease;
+  }
+
+  /* Typography Header */
+  h1 {
+    font-size: 2.2rem;
+    font-weight: 800;
+    margin-top: 0;
+    margin-bottom: 8px;
+    background: linear-gradient(135deg, #ffffff 0%, #cbd5e1 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  p.subtitle {
+    color: var(--text-secondary);
+    margin-bottom: 28px;
+    font-size: 0.95rem;
+  }
+
+  h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    line-height: 1.5;
+  }
+
+  /* Buttons */
+  button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    margin: 10px 0;
+    padding: 16px 20px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    cursor: pointer;
+    background: rgba(255, 255, 255, 0.04);
+    color: var(--text-primary);
+    font-size: 0.95rem;
+    font-weight: 600;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  button:hover {
+    background: var(--accent-blue);
+    border-color: transparent;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px -5px rgba(59, 130, 246, 0.4);
+  }
+
+  button:active {
+    transform: translateY(0);
+  }
+
+  .grid-select {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 14px;
+    margin-top: 20px;
+  }
+
+  .hidden { display: none !important; }
+  
+  /* Progress Bar */
+  .meta-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  #progress-bar {
+    height: 8px;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 999px;
+    margin: 16px 0 28px 0;
+    overflow: hidden;
+  }
+
+  #progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #3b82f6, #10b981);
+    width: 0%;
+    transition: width 0.4s ease-in-out;
+  }
+
+  /* Results Table */
+  .results-container {
+    text-align: left;
+    margin-top: 24px;
+    max-height: 400px;
+    overflow-y: auto;
+    padding-right: 8px;
+  }
+
+  .results-container::-webkit-scrollbar {
+    width: 6px;
+  }
+  .results-container::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+  }
+
+  .result-item {
+    padding: 16px;
+    margin-bottom: 12px;
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+  }
+
+  .correct { color: #34d399; font-weight: 600; }
+  .wrong { color: #f87171; font-weight: 600; }
+  .correct-label { color: var(--text-secondary); display: block; font-size: 0.85rem; margin-top: 6px; }
+
+  /* Modal Popup */
+  .popup {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(9, 13, 22, 0.8);
+    backdrop-filter: blur(8px);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+  }
+
+  .popup-box {
+    background: #161e2e;
+    padding: 36px;
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
+    text-align: center;
+    max-width: 400px;
+    width: 90%;
+  }
+
+  .btn-primary {
+    background: var(--accent-green);
+    border-color: transparent;
+  }
+
+  .btn-primary:hover {
+    background: var(--accent-green-hover);
+    box-shadow: 0 10px 20px -5px rgba(16, 185, 129, 0.4);
+  }
+</style>
+</head>
+<body>
+
+<!-- Animated Background Elements -->
+<div class="bg-shape bg-shape-1"></div>
+<div class="bg-shape bg-shape-2"></div>
+<div class="bg-pattern"></div>
+
+<div class="container" id="gameContainer">
+  <!-- Start Screen -->
+  <div id="startScreen" style="text-align: center;">
+    <h1>🎓 Ultimate Career Quiz</h1>
+    <p class="subtitle">Test and expand your expertise across various professional disciplines.</p>
+    <button class="btn-primary" onclick="showCourseSelection()">Enter Quiz Engine</button>
+  </div>
+
+  <!-- Course Selection Screen -->
+  <div id="courseScreen" class="hidden">
+    <h3 style="margin-top: 0;">Select Your Specialization</h3>
+    <p class="subtitle">Choose a course module to start your evaluation.</p>
+    <div class="grid-select" id="courseList"></div>
+  </div>
+
+  <!-- Quiz Active Screen -->
+  <div id="quizScreen" class="hidden">
+    <div class="meta-bar">
+      <span id="courseDisplay" style="color: var(--accent-blue);"></span>
+      <span id="levelDisplay"></span>
+    </div>
+    <div id="progress-bar"><div id="progress-fill"></div></div>
+    <h3 id="question" style="min-height: 60px;"></h3>
+    <div id="answers"></div>
+  </div>
+
+  <!-- Finish Assessment Screen -->
+  <div id="finishScreen" class="hidden" style="text-align: center;">
+    <h2>📊 Assessment Complete</h2>
+    <p class="subtitle">Here is your total score and breakdown:</p>
+    <h1 id="finalScoreDisplay" style="font-size: 3rem; color: var(--accent-green);"></h1>
+    <div class="results-container" id="resultsLog"></div>
+    <button onclick="resetToMenu()" style="margin-top: 24px;">Try Another Course</button>
+  </div>
+</div>
+
+<!-- Level Complete Popup -->
+<div class="popup" id="popup">
+  <div class="popup-box">
+    <h2>🎉 Level Complete!</h2>
+    <p id="popupText" style="color: var(--text-secondary); margin: 16px 0 24px 0;"></p>
+    <button class="btn-primary" onclick="nextLevel()">Continue Next Level</button>
+  </div>
+</div>
+
+<script>
+const gameData = {
+  "IT": [
+    [{q:"What is the primary function of a CPU?", a:["Store Data","Manage Hardware","Perform Calculations","Connect to Internet"], c:2}, {q:"Which is a markup language?", a:["Java","Python","HTML","C#"], c:2}, {q:"Basic unit of digital information?", a:["Block","Bit","Byte","Pixel"], c:1}, {q:"Port used for HTTPS?", a:["80","21","443","22"], c:2}, {q:"Which OS is open source?", a:["Windows","macOS","Linux","iOS"], c:2}],
+    [{q:"What does SQL stand for?", a:["Simple Query Lang","Structured Query Lang","System Quantify Logic","None"], c:1}, {q:"A class in OOP is a ___?", a:["Variable","Blueprint","Function","Loop"], c:1}, {q:"Which is a NoSQL database?", a:["MySQL","Oracle","MongoDB","PostgreSQL"], c:2}, {q:"HTTP status code 404 means?", a:["Server Error","Forbidden","Not Found","Success"], c:2}, {q:"What is 'Git'?", a:["Compiler","IDE","Version Control","Library"], c:2}],
+    [{q:"Big O complexity of a nested loop?", a:["O(n)","O(log n)","O(n^2)","O(1)"], c:2}, {q:"Which is NOT a Cloud provider?", a:["AWS","Azure","GCP","Adobe"], c:3}, {q:"What is a 'Full-Stack' developer?", a:["UI only","DB only","Front & Back end","Mobile only"], c:2}, {q:"Primary use of Docker?", a:["Game Dev","Containerization","Spreadsheets","Emails"], c:1}, {q:"What is an API?", a:["App Programming Interface","Auto Program Info","Array Pixel Index","None"], c:0}],
+    [{q:"What is 'DNS'?", a:["Data Name Sys","Domain Name Sys","Digital Net Serv","None"], c:1}, {q:"A 'Deadlock' occurs when?", a:["PC crashes","Thread waits forever","Internet drops","HDD full"], c:1}, {q:"What is 'Salting' in security?", a:["Adding random data to passwords","Deleting data","Hacking","Formatting"], c:0}, {q:"Which protocol is for emails?", a:["HTTP","FTP","SMTP","UDP"], c:2}, {q:"What is a 'Foreign Key'?", a:["Encryption key","Link between tables","Guest password","Global variable"], c:1}],
+    [{q:"What is the CAP theorem?", a:["Speed/Size","Cost/Power","Consistency/Availability/Partition","None"], c:2}, {q:"A 64-bit system allows more ___?", a:["Colors","RAM addressing","Monitor size","Fans"], c:1}, {q:"What is 'Refactoring'?", a:["Deleting code","Rewriting for clarity","Adding features","Compiling"], c:1}, {q:"A Binary Search requires?", a:["Small list","Sorted list","Unsorted list","Large strings"], c:1}, {q:"What is a 'Zero Day'?", a:["New PC","Unpatched vulnerability","Holiday","Server reset"], c:1}]
+  ],
+  "Civil Engineering": [
+    [{q:"Main component of concrete?", a:["Glue","Cement","Metal","Wood"], c:1}, {q:"Blueprints are usually drawn in?", a:["Portrait","Landscape","Plan View","3D"], c:2}, {q:"What is 'Dead Load'?", a:["Weight of people","Weight of structure","Wind","Earthquake"], c:1}, {q:"Hardest natural mineral?", a:["Steel","Granite","Diamond","Quartz"], c:2}, {q:"Which tool measures angles?", a:["Tape","Theodolite","Scale","Level"], c:1}],
+    [{q:"Stress is calculated as?", a:["Force x Area","Force / Area","Mass / Vol","Area / Force"], c:1}, {q:"The 'Slump Test' measures?", a:["Strength","Workability","Color","Weight"], c:1}, {q:"A Cantilever is supported at?", a:["Both ends","Middle","One end","Center"], c:2}, {q:"What is 'Curing'?", a:["Mixing","Drying control","Breaking","Painting"], c:1}, {q:"Surveying: What is a Benchmark?", a:["A tool","Known elevation","A law","A chair"], c:1}],
+    [{q:"Hooke's Law relates to?", a:["Gravity","Elasticity","Fluids","Heat"], c:1}, {q:"Which soil has smallest particles?", a:["Sand","Silt","Clay","Gravel"], c:2}, {q:"Moment of Inertia measures?", a:["Speed","Mass","Resistance to rotation","Gravity"], c:2}, {q:"Primary purpose of Rebar?", a:["Decoration","Tensile strength","Weight","Rust"], c:1}, {q:"What is 'Truss'?", a:["Pipe","Support frame","Wall","Foundation"], c:1}],
+    [{q:"Standard Poissons ratio for concrete?", a:["0.50","0.15","1.0","0.80"], c:1}, {q:"What is 'Pre-stressing'?", a:["Adding load before use","Internal tension","Speeding up","Painting"], c:1}, {q:"Which is a deep foundation?", a:["Pad","Strip","Pile","Mat"], c:2}, {q:"What does 'M-20' represent?", a:["Mass","Mix proportion","Mix strength","Member length"], c:2}, {q:"A proctor test determines?", a:["Max density","Height","Width","Color"], c:0}],
+    [{q:"Darcy's Law is used for?", a:["Steel","Hydraulic conductivity","Wind","Light"], c:1}, {q:"What is 'Creep'?", a:["Moving soil","Time-dependent deformation","Cracks","Leaks"], c:1}, {q:"Shear force is zero where ___ is max?", a:["Stress","Bending Moment","Strain","Deflection"], c:1}, {q:"Euler's formula predicts?", a:["Tensile failure","Buckling","Melting","Torsion"], c:1}, {q:"Modulus of Rigidity is?", a:["Stress/Strain","Shear Stress/Shear Strain","Mass/Area","None"], c:1}]
+  ],
+  "Law": [
+    [{q:"Highest law in most lands?", a:["Civil Code","Constitution","Criminal Law","Bylaws"], c:1}, {q:"A 'Plaintiff' is?", a:["The accused","The one suing","The judge","A witness"], c:1}, {q:"A felony is?", a:["Minor crime","Serious crime","Traffic violation","No crime"], c:1}, {q:"'Notarized' means?", a:["In prison","Certified by official","Secret","Illegal"], c:1}, {q:"Testimony is?", a:["Evidence from speech","Physical evidence","A fine","A contract"], c:0}],
+    [{q:"What is a 'Tort'?", a:["Criminal act","Civil wrong","Contract type","Food"], c:1}, {q:"Habeas Corpus refers to?", a:["Marriage","Property","Unlawful detention","Tax"], c:2}, {q:"An 'Affidavit' is?", a:["A secret","Written statement on oath","A verdict","A fine"], c:1}, {q:"Bail is?", a:["A sentence","Money for release","A prison cell","A lawyer"], c:1}, {q:"Who decides a verdict in some trials?", a:["Lawyer","Police","Jury","Clerk"], c:2}],
+    [{q:"'Mens Rea' means?", a:["Guilty act","Guilty mind","Law of land","Fair play"], c:1}, {q:"'Actus Reus' means?", a:["Guilty act","Guilty mind","Self defense","Intent"], c:0}, {q:"A 'Subpoena' is?", a:["A fine","Order to appear","A contract","A bribe"], c:1}, {q:"Double Jeopardy prevents?", a:["Lying","Being tried twice for same crime","Prison","Fines"], c:1}, {q:"The 'Bar' refers to?", a:["A party","Legal profession","A jail","A desk"], c:1}],
+    [{q:"'Stare Decisis' means?", a:["Let the decision stand","Start over","Change law","Punishment"], c:0}, {q:"Statute of Limitations is?", a:["Max height of building","Time limit to sue","Number of laws","Price of court"], c:1}, {q:"'Pro Bono' means?", a:["For a fee","For free/public good","Professional only","Banned"], c:1}, {q:"What is 'Ex Post Facto'?", a:["New law applied backwards","Current law","Old law","Future law"], c:0}, {q:"What is 'Due Process'?", a:["Speedy trial","Fair treatment through system","High taxes","Police arrest"], c:1}],
+    [{q:"'Prima Facie' means?", a:["At first sight","In private","Legally dead","Final"], c:0}, {q:"Which branch makes laws?", a:["Judicial","Executive","Legislative","Police"], c:2}, {q:"'Certiorari' is?", a:["A fine","Higher court review","Marriage","Arrest"], c:1}, {q:"A 'Codicil' is?", a:["Code of law","Will amendment","Prison rule","Fine"], c:1}, {q:"'In Loco Parentis' means?", a:["Mad parent","In place of parent","Lost parent","Orphanage"], c:1}]
+  ],
+  "Psychology": [
+    [{q:"Who founded Psychoanalysis?", a:["Pavlov","Freud","Skinner","Piaget"], c:1}, {q:"Which part of mind is moral?", a:["Id","Ego","Superego","Dreams"], c:2}, {q:"Introverts usually prefer?", a:["Parties","Solitude","Crowds","Public speaking"], c:1}, {q:"What is an 'I.Q.'?", a:["Identity Quotient","Intelligence Quotient","Internal Quiet","None"], c:1}, {q:"Fear of spiders is?", a:["Social phobia","Arachnophobia","Agoraphobia","Claustrophobia"], c:1}],
+    [{q:"Classical Conditioning used?", a:["Cats","Dogs","Rats","Birds"], c:1}, {q:"Who studied child development?", a:["Darwin","Piaget","Newton","Tesla"], c:1}, {q:"Nature vs Nurture refers to?", a:["Woods vs Home","Genetics vs Environment","Dogs vs Cats","Birth vs Death"], c:1}, {q:"A 'Placebo' is?", a:["Strong drug","Fake treatment","Brain part","Sleep disorder"], c:1}, {q:"Short-term memory lasts?", a:["2 hours","20-30 seconds","1 day","5 minutes"], c:1}],
+    [{q:"'Cognitive Dissonance' is?", a:["Mental Peace","Mental Conflict","Losing memory","Hearing voices"], c:1}, {q:"The 'Bystander Effect' says?", a:["More people help","Fewer people help","No one cares","Police help"], c:1}, {q:"Who created the hierarchy of needs?", a:["Freud","Maslow","Jung","Rogers"], c:1}, {q:"What is 'Empathy'?", a:["Feeling sorry","Understanding others feelings","Angry","Selfish"], c:1}, {q:"Rorschach test uses?", a:["Colors","Inkblots","Numbers","Songs"], c:1}],
+    [{q:"What is 'Dopamine'?", a:["Muscle","Neurotransmitter","Bone","Vitamin"], c:1}, {q:"Which lobe handles vision?", a:["Frontal","Temporal","Occipital","Parietal"], c:2}, {q:"'Agoraphobia' is fear of?", a:["Spiders","Open/Crowded spaces","Heights","Water"], c:1}, {q:"Self-Actualization is?", a:["End of life","Reaching full potential","Being rich","Sleeping"], c:1}, {q:"Schizophrenia involves?", a:["Forgot name","Hallucinations","Sadness","Energy"], c:1}],
+    [{q:"The 'Stanford Prison Experiment' was about?", a:["Math","Social Roles/Power","Nutrition","Sleep"], c:1}, {q:"What is 'Metacognition'?", a:["Fast thinking","Thinking about thinking","Reading minds","Memory loss"], c:1}, {q:"'Projection' is a ___?", a:["Movie tool","Defense mechanism","Memory","Drug"], c:1}, {q:"Who founded Behaviorism?", a:["Freud","Watson","Maslow","Jung"], c:1}, {q:"Seasonal Affective Disorder is linked to?", a:["Food","Sunlight/Seasons","Exercise","Age"], c:1}]
+  ],
+  "Pilot": [
+    [{q:"Force that pulls aircraft down?", a:["Lift","Drag","Gravity","Thrust"], c:2}, {q:"Port side color?", a:["Green","White","Red","Blue"], c:2}, {q:"Standard number of engines on Cessna 172?", a:["2","1","4","0"], c:1}, {q:"What is 'VFR'?", a:["Very Fast Run","Visual Flight Rules","Vertical Flight","None"], c:1}, {q:"Where do you land?", a:["Taxiway","Runway","Terminal","Hangars"], c:1}],
+    [{q:"What controls 'Roll'?", a:["Rudder","Elevator","Ailerons","Flaps"], c:2}, {q:"'Altitude' is measured by?", a:["Compass","Altimeter","Radio","Clock"], c:1}, {q:"The 'Yoke' is like a?", a:["Pedal","Steering Wheel","Brake","Seat"], c:1}, {q:"Force that moves plane forward?", a:["Lift","Drag","Thrust","Gravity"], c:2}, {q:"What is 'ATC'?", a:["Auto Takeoff","Air Traffic Control","Air Tool Center","None"], c:1}],
+    [{q:"What causes a 'Stall'?", a:["Engine off","Exceeding Critical Angle of Attack","High speed","Heavy rain"], c:1}, {q:"Pitot tube measures?", a:["Altitude","Airspeed","Oil","Temp"], c:1}, {q:"Standard Altimeter setting?", a:["29.92","30.00","28.00","None"], c:0}, {q:"What controls 'Yaw'?", a:["Ailerons","Rudder","Elevator","Throttle"], c:1}, {q:"What is 'IFR'?", a:["Internal Flight","Instrument Flight Rules","Island Flight","None"], c:1}],
+    [{q:"'Mach 1' is the speed of?", a:["Light","Sound","Wind","A Rocket"], c:1}, {q:"Highest point of an airfoil?", a:["Mean Camber","Leading Edge","Trailing Edge","Chord"], c:0}, {q:"'Squawk 7700' means?", a:["Radio fail","Hijack","Emergency","Normal"], c:2}, {q:"Where is the 'Fuselage'?", a:["The wings","The main body","The tail","The engine"], c:1}, {q:"What is 'Ground Effect'?", a:["Crashing","Reduced drag near ground","Wind","Dust"], c:1}],
+    [{q:"'Bernoulli's Principle' explains?", a:["Gravity","Lift","Fuel","Radio"], c:1}, {q:"What is the 'Troposphere'?", a:["Space","Lowest layer of atmosphere","The sun","A cloud"], c:1}, {q:"'CAVOK' means?", a:["Rainy","Ceiling and Visibility OK","Cloudy","Cold"], c:1}, {q:"Dead Reckoning is?", a:["Crashing","Navigating by time/distance","Landing","Engine check"], c:1}, {q:"A 'Spin' involves?", a:["Speeding","Stall + Yaw","Smooth landing","Fast climb"], c:1}]
+  ],
+  "Marine": [
+    [{q:"Right side of ship?", a:["Port","Starboard","Bow","Stern"], c:1}, {q:"Front of ship?", a:["Stern","Aft","Bow","Bridge"], c:2}, {q:"What is a 'Knot'?", a:["Rope only","Speed unit","Depth","Color"], c:1}, {q:"Used to stop ship?", a:["Brake","Anchor","Rope","Sail"], c:1}, {q:"What is 'Hull'?", a:["Captain","Body of ship","Engine","Window"], c:1}],
+    [{q:"What is 'Draft'?", a:["Wind","Depth below waterline","Wind above ship","Length"], c:1}, {q:"A 'Fathom' equals?", a:["1 meter","6 feet","10 feet","1 mile"], c:1}, {q:"Where is the 'Galley'?", a:["Bedroom","Kitchen","Engine room","Bridge"], c:1}, {q:"What is 'Ballast'?", a:["Fuel","Weight for stability","Food","Cargo"], c:1}, {q:"'Mayday' means?", a:["Holiday","Distress call","Lunch time","Arrival"], c:1}],
+    [{q:"Navigation light on Starboard?", a:["Red","Green","White","Yellow"], c:1}, {q:"What is 'Pitching'?", a:["Side to side","Up and down bow/stern","Turning","Sinking"], c:1}, {q:"Primary tool for depth?", a:["Compass","Echo Sounder","Radar","Sextant"], c:1}, {q:"What is 'Panting' in a ship?", a:["Hot engine","Hull plating vibration","Sinking","Fast speed"], c:1}, {q:"SOLAS stands for?", a:["Solar power","Safety of Life at Sea","Solo Sailing","None"], c:1}],
+    [{q:"The 'Plimsoll Line' shows?", a:["Speed","Max loading limit","Ship name","Fuel level"], c:1}, {q:"'Lee' side is?", a:["Windy side","Sheltered side","Bottom","Top"], c:1}, {q:"'Bulkhead' is a?", a:["Big head","Vertical wall","Floor","Ceiling"], c:1}, {q:"MARPOL is about?", a:["Mapping","Pollution prevention","Marketing","Polishing"], c:1}, {q:"A 'Sextant' measures?", a:["Depth","Celestial angles","Speed","Weight"], c:1}],
+    [{q:"'Gross Tonnage' measures?", a:["Weight","Internal volume","Speed","Length"], c:1}, {q:"What is 'Cavitation'?", a:["Rust","Bubbles on propeller","Sinking","Painting"], c:1}, {q:"An 'Ais' is?", a:["Automatic ID System","Air Ice System","Anchor Info","None"], c:0}, {q:"The 'Keel' is?", a:["The top","Bottom backbone","The sail","The door"], c:1}, {q:"A 'Log' measures?", a:["Fuel","Speed/Distance","Wood","Temperature"], c:1}]
+  ],
+  "Agriculture": [
+    [{q:"Study of soil/crops?", a:["Biology","Agronomy","Geology","Physics"], c:1}, {q:"Process of water to crops?", a:["Mining","Irrigation","Drying","Plowing"], c:1}, {q:"Primary food for plants?", a:["Meat","Fertilizer/Nutrients","Milk","Bread"], c:1}, {q:"Which is a cereal crop?", a:["Apple","Rice","Potato","Tomato"], c:1}, {q:"A male cow is?", a:["Heifer","Bull","Ewe","Hen"], c:1}],
+    [{q:"N-P-K: N stands for?", a:["Neon","Nitrogen","Nickel","Sodium"], c:1}, {q:"What is 'Photosynthesis'?", a:["Plant breathing/feeding","Digging","Raining","Dying"], c:0}, {q:"'Organic' farming avoids?", a:["Water","Synthetic chemicals","Seeds","Sunlight"], c:1}, {q:"Main tool for turning soil?", a:["Hammer","Plow","Screwdriver","Net"], c:1}, {q:"What is 'Litter' in farming?", a:["Trash","Animal bedding","Babies","Milk"], c:1}],
+    [{q:"Soil with small particles?", a:["Sand","Clay","Silt","Rock"], c:1}, {q:"'Hydroponics' is?", a:["Soil farming","Water-based farming","Air farming","Space"], c:1}, {q:"What is 'Crop Rotation'?", a:["Turning plants","Changing crops yearly","Moving farm","Spinning seeds"], c:1}, {q:"What is 'Silage'?", a:["Dirt","Fermented green forage","Seeds","Water"], c:1}, {q:"'Pesticides' kill?", a:["Crops","Pests/Insects","Farmers","Birds"], c:1}],
+    [{q:"A 'Ruminant' animal has?", a:["1 stomach","4 stomach compartments","No stomach","Wings"], c:1}, {q:"'Monoculture' means?", a:["Many crops","Single crop","No crops","Art"], c:1}, {q:"What is 'Sustainable' farming?", a:["Fast farming","Long-term health farming","Expensive farming","None"], c:1}, {q:"'Transpiration' is?", a:["Plant sweating","Plant eating","Plant growing","Plant dying"], c:0}, {q:"A 'Combine' is for?", a:["Mixing","Harvesting","Planting","Watering"], c:1}],
+    [{q:"'Grafting' is used for?", a:["Killing trees","Joining plant parts","Digging","Cooking"], c:1}, {q:"pH 7.0 soil is?", a:["Acidic","Neutral","Alkaline","Toxic"], c:1}, {q:"'Vermicompost' uses?", a:["Ants","Worms","Bees","Cats"], c:1}, {q:"'Fallow' land is?", a:["Rich","Left unseeded","Forest","Underwater"], c:1}, {q:"What is 'Aquaponics'?", a:["Fish + Plants","Fish only","Water only","Air"], c:0}]
+  ],
+  "Education": [
+    [{q:"The 'Plan' for a class?", a:["Lesson Plan","Journal","Map","List"], c:0}, {q:"Who is the learner?", a:["Teacher","Student","Principal","Janitor"], c:1}, {q:"What is 'Pedagogy'?", a:["Science of feet","Art of teaching","Art of drawing","None"], c:1}, {q:"Where do students learn?", a:["Cinema","Classroom","Gym only","Market"], c:1}, {q:"A test measures?", a:["Height","Knowledge","Weight","Speed"], c:1}],
+    [{q:"'K-12' refers to?", a:["Age","Kinder to Grade 12","12 schools","None"], c:1}, {q:"What is 'Curriculum'?", a:["Lunch menu","Study program","Bus route","School building"], c:1}, {q:"'Motivation' helps students?", a:["Sleep","Engage/Learn","Fight","Leave"], c:1}, {q:"'Formative' assessment is?", a:["End of year","During learning","For fun","For parents"], c:1}, {q:"Who is the 'Father of Kindergarten'?", a:["Dewey","Froebel","Vygotsky","Piaget"], c:1}],
+    [{q:"Bloom's Taxonomy is for?", a:["Plants","Learning objectives","Budgeting","Cleaning"], c:1}, {q:"'Scaffolding' means?", a:["Building walls","Supporting learners","Climbing","Painting"], c:1}, {q:"What is 'Inclusion'?", a:["Excluding students","Teaching all together","Private school","Home school"], c:1}, {q:"'Dyslexia' affects?", a:["Math","Reading/Writing","Running","Singing"], c:1}, {q:"'Rote' learning is?", a:["Logic","Memorization","Games","Sports"], c:1}],
+    [{q:"'Andragogy' is for?", a:["Kids","Adults","Animals","Plants"], c:1}, {q:"'Summative' assessment is?", a:["Daily","End of unit/term","Optional","Secret"], c:1}, {q:"'Metacognition' is?", a:["Fast math","Thinking about thinking","Memory loss","Drawing"], c:1}, {q:"Vygotsky's ZPD stands for?", a:["Zone of Parent Dev","Zone of Proximal Dev","Zero Point Data","None"], c:1}, {q:"'Extrinsic' motivation comes from?", a:["Inside","Outside rewards","Dreams","Hunger"], c:1}],
+    [{q:"'Constructivism' says?", a:["Teachers build","Students construct knowledge","No books","No rules"], c:1}, {q:"'Differentiated Instruction' means?", a:["Harder tests","Tailoring to needs","Different schools","One way only"], c:1}, {q:"What is 'Cognitive' development?", a:["Muscle","Mental/Brain","Hair","Height"], c:1}, {q:"'Epistemology' is study of?", a:["Skin","Knowledge","Insects","Stars"], c:1}, {q:"A 'Rubric' is for?", a:["Cleaning","Scoring/Criteria","Singing","Reading"], c:1}]
+  ]
+};
+
+const icons = {
+  "IT": "💻",
+  "Civil Engineering": "🏗️",
+  "Law": "⚖️",
+  "Psychology": "🧠",
+  "Pilot": "✈️",
+  "Marine": "⚓",
+  "Agriculture": "🌾",
+  "Education": "📚"
+};
+
+let selectedCourse = "";
+let currentLevel = 0;
+let currentQuestion = 0;
+let score = 0;
+let userLog = [];
+
+function showCourseSelection() {
+  document.getElementById("startScreen").classList.add("hidden");
+  document.getElementById("courseScreen").classList.remove("hidden");
+  const list = document.getElementById("courseList");
+  list.innerHTML = "";
+  Object.keys(gameData).forEach(course => {
+    let btn = document.createElement("button");
+    btn.innerHTML = `<span>${icons[course] || "🎓"}</span> <span>${course}</span>`;
+    btn.onclick = () => selectCourse(course);
+    list.appendChild(btn);
+  });
+}
+
+function selectCourse(course) {
+  selectedCourse = course;
+  document.getElementById("courseScreen").classList.add("hidden");
+  document.getElementById("quizScreen").classList.remove("hidden");
+  loadQuestion();
+}
+
+function loadQuestion() {
+  const qData = gameData[selectedCourse][currentLevel][currentQuestion];
+  document.getElementById("courseDisplay").textContent = `${icons[selectedCourse] || ''} ${selectedCourse}`;
+  document.getElementById("levelDisplay").textContent = `Level ${currentLevel+1} • Q ${currentQuestion+1}/5`;
+  document.getElementById("progress-fill").style.width = ((currentLevel*5 + currentQuestion)/25)*100 + "%";
+  document.getElementById("question").textContent = qData.q;
+  const answersDiv = document.getElementById("answers");
+  answersDiv.innerHTML = "";
+  qData.a.forEach((ans, idx) => {
+    let btn = document.createElement("button");
+    btn.textContent = ans;
+    btn.onclick = () => checkAnswer(idx);
+    answersDiv.appendChild(btn);
+  });
+}
+
+function checkAnswer(index) {
+  const qData = gameData[selectedCourse][currentLevel][currentQuestion];
+  const isCorrect = (index === qData.c);
+  if (isCorrect) score++;
+  userLog.push({ q: qData.q, u: qData.a[index], r: qData.a[qData.c], ok: isCorrect });
+  currentQuestion++;
+  if (currentQuestion < 5) loadQuestion();
+  else showPopup();
+}
+
+function showPopup() {
+  document.getElementById("popupText").textContent = `Level ${currentLevel + 1} completed! You scored ${score} out of 25 overall.`;
+  document.getElementById("popup").style.display = "flex";
+}
+
+function nextLevel() {
+  document.getElementById("popup").style.display = "none";
+  currentLevel++;
+  currentQuestion = 0;
+  if (currentLevel < 5) loadQuestion();
+  else finishGame();
+}
+
+function finishGame() {
+  document.getElementById("quizScreen").classList.add("hidden");
+  document.getElementById("finishScreen").classList.remove("hidden");
+  document.getElementById("finalScoreDisplay").textContent = `${score} / 25`;
+  const log = document.getElementById("resultsLog");
+  log.innerHTML = "";
+  userLog.forEach((item, i) => {
+    log.innerHTML += `<div class="result-item">
+      <strong>${i+1}. ${item.q}</strong><br>
+      <span class="${item.ok?'correct':'wrong'}">${item.ok?'✓':'✗'} Your Choice: ${item.u}</span>
+      ${!item.ok?`<span class="correct-label">Correct Answer: ${item.r}</span>`:''}
+    </div>`;
+  });
+}
+
+function resetToMenu() {
+  currentLevel = 0;
+  currentQuestion = 0;
+  score = 0;
+  userLog = [];
+  
+  document.getElementById("resultsLog").innerHTML = "";
+  document.getElementById("finalScoreDisplay").textContent = "";
+  document.getElementById("progress-fill").style.width = "0%";
+  
+  document.getElementById("finishScreen").classList.add("hidden");
+  showCourseSelection();
+}
+</script>
+</body>
+</html>
